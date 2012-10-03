@@ -97,6 +97,9 @@ end
 
 -- Fires when the player begins interaction with the guild bank.
 function Memento:GUILDBANKFRAME_OPENED()
+    if not currentGuild then
+        self:UpdateCurrentGuild()
+    end
     self.atGuildBank = true
 end
 
@@ -135,7 +138,7 @@ function Memento:PLAYER_ENTERING_WORLD()
     --self:UnRegisterEvent("PLAYER_ENTERING_WORLD")
     
     -- GuildInfo is nil when first logging in so we set it here
-    currentGuild = GetGuildInfo("player")
+    self:UpdateCurrentGuild()
     
     -- Refresh the item data for all bags
     self:SaveBags()
@@ -152,7 +155,7 @@ end
 -- Fires when information about the player's guild membership changes.
 function Memento:PLAYER_GUILD_UPDATE(unitID)
     if "player" == unitID then
-        currentGuild = GetGuildInfo("player")
+        self:UpdateCurrentGuild()
     end
 end
 
@@ -189,15 +192,6 @@ function Memento:ItemLinkToID(link)
     return link:match("item:(%d+)")
 end
 
--- Returns the player database from the current realm
-function Memento:GetPlayers()
-    if not self.realmDB then
-        return {}
-    else
-        return pairs(self.realmDB['players'])
-    end
-end
-
 -- Loads the item database
 function Memento:LoadDB ()
     --[[
@@ -226,7 +220,7 @@ function Memento:LoadDB ()
             }, ...
         }
     ]]
-    if not (MementoDB and MementoDB.version) then
+    if not (MementoDB and MementoDB.version) or (2 == DEBUG) then
         MementoDB = {version = CURRENT_VERSION}
     else
         -- Future support for updating database formats
@@ -234,7 +228,7 @@ function Memento:LoadDB ()
         local major, minor = MementoDB.version:match("(%d+)%.(%d+)")
         
         -- Convert or update the db if needed
-        if (major ~= curMajor) or (2 == DEBUG) then
+        if major ~= curMajor then
             -- TODO: Convert database
             MementoDB = {version = CURRENT_VERSION}
         elseif minor ~= curMinor then
@@ -258,15 +252,7 @@ function Memento:LoadDB ()
     end
     self.realmDB = self.DB[currentRealm]
     
-    if nil == currentGuild then
-        self.guildDB = {}
-    else
-        if not self.realmDB["guilds"][currentGuild] then
-            self:Debug("New guild: " .. currentGuild)
-            self.realmDB["guilds"][currentGuild] = {}
-        end
-        self.guildDB = self.realmDB["guilds"][currentGuild]
-    end
+    -- guildDB is handled in PLAYER_ENTER_WORLD --
     
     if not self.realmDB["players"][currentPlayer] then
         self:Debug("New player: " .. currentPlayer)
@@ -387,10 +373,17 @@ function Memento:SaveGuildBank()
             if tabDB[id] then
                 count = tabDB[id][1] + count
             end
+            self:Debug(format("id: %i, count: %i", id, count))
             tabDB[id] = {count}
         end
     end
     
+    -- Cleanup any old data first
+    if self.guildDB[tab] then
+        for k, v in pairs(self.guildDB[tab]) do
+            tab[k] = nil
+        end
+    end
     self.guildDB[tab] = tabDB
 end
 
@@ -526,6 +519,22 @@ end
 -- Updates the data structure of the local database
 function Memento:UpdateDB()
     -- Future support
+end
+
+-- Updates the current guild to the player's current guild
+function Memento:UpdateCurrentGuild()
+    currentGuild = GetGuildInfo("player")
+    if currentGuild then
+        if not self.realmDB["guilds"][currentGuild] then
+            self:Debug("New guild: " .. currentGuild)
+            self.realmDB["guilds"][currentGuild] = {}
+        else
+            self:Debug("Found guildDB: " .. currentGuild)
+        end
+        self.guildDB = self.realmDB["guilds"][currentGuild]
+    else
+        self:Debug("Empty guild: " .. tostring(currentGuild))
+    end
 end
 
 -- Updates the item cache
