@@ -381,7 +381,7 @@ function Memento:SaveGuildBank()
     -- Cleanup any old data first
     if self.guildDB[tab] then
         for k, v in pairs(self.guildDB[tab]) do
-            tab[k] = nil
+            self.guildDB[tab][k] = nil
         end
     end
     self.guildDB[tab] = tabDB
