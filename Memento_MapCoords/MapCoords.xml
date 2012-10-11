@@ -1,0 +1,43 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+	<Script file="MapCoords.lua"/>
+	<Frame name="MapCoordsPortraitFrame" parent="PlayerFrame" hidden="false">
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="MapCoordsPlayerPortraitCoords" hidden="false" inherits="GameFontNormalSmall" text="">
+					<Anchors>
+						<Anchor point="BOTTOM" relativeTo="PlayerFrame" relativePoint="BOTTOM">
+							<Offset>
+								<AbsDimension x="-45" y="5"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnUpdate>
+				MapCoordsPlayer_OnUpdate()
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+	<Frame name="MapCoordsWorldMapFrame" parent="WorldMapFrame" hidden="false">
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="MapCoordsWorldMap" hidden="false" inherits="GameFontNormal" text="">
+					<Anchors>
+						<Anchor point="BOTTOM" relativeTo="WorldMapFrame" relativePoint="BOTTOM">
+							<Offset>
+								<AbsDimension x="0" y="10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnUpdate>
+				MapCoordsWorldMap_OnUpdate()
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+</Ui>

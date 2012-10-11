@@ -1,0 +1,8 @@
+## Interface: 50001
+## Title: TargetHP |cff008080by Memento|r
+## Notes: Shows your target's health percent above their portrait.
+## Author: Windrunner-US:Integer
+## Version: 1.0.0
+## X-Website: https://github.com/rtomson
+
+TargetHP.lua

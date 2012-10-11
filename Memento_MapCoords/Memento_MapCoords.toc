@@ -1,0 +1,10 @@
+## Interface: 50001
+## Title: MapCoords |cff008080by Memento|r
+## Notes: Shows coordinates on the world map and below your character portrait.
+## Author: Windrunner-US:Integer
+## Version: 1.0
+## SavedVariables: MapCoords
+## LoadOnDemand: 0
+## X-Website: https://github.com/rtomson
+
+MapCoords.xml

@@ -1,0 +1,10 @@
+## Interface: 50001
+## Title: Item Count |cff008080by Memento|r
+## Notes: Item tooltip enhancement to show how many items each character has.
+## Author: Windrunner-US:Integer
+## Version: 1.0.0
+## SavedVariables: MementoDB
+## LoadOnDemand: 0
+## X-Website: https://github.com/rtomson
+
+ItemCount.lua
