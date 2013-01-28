@@ -1,0 +1,15 @@
+## Interface: 50100
+## Title: Mount Favorites
+## Notes: Adds a favorites interface to the MountJournal.
+## Author: Windrunner-US:Integer
+## Version: 1
+## SavedVariables: MountFavoritesDB
+## Dependencies: Blizzard_PetJournal
+## X-Website: https://github.com/rtomson
+
+lib\LibStub\LibStub.lua
+lib\CallbackHandler-1.0\CallbackHandler-1.0.xml
+lib\LibMounts-1.0\lib.xml
+
+Localization.lua
+MountFavorites.xml
