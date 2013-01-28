@@ -1,4 +1,4 @@
-## Interface: 50001
+## Interface: 50100
 ## Title: TargetHP |cff008080by Memento|r
 ## Notes: Shows your target's health percent above their portrait.
 ## Author: Windrunner-US:Integer
