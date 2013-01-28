@@ -1,4 +1,4 @@
-## Interface: 50001
+## Interface: 50100
 ## Title: Item Count |cff008080by Memento|r
 ## Notes: Item tooltip enhancement to show how many items each character has.
 ## Author: Windrunner-US:Integer
