@@ -1,4 +1,4 @@
-## Interface: 50001
+## Interface: 50100
 ## Title: MapCoords |cff008080by Memento|r
 ## Notes: Shows coordinates on the world map and below your character portrait.
 ## Author: Windrunner-US:Integer
