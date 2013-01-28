@@ -189,6 +189,9 @@ end
 
 -- Returns the itemID of (link)
 function Memento:ItemLinkToID(link)
+    if nil == link then
+        return nil
+    end
     return link:match("item:(%d+)")
 end
 
@@ -407,10 +410,12 @@ function Memento:SaveMail()
                     local id = self:ItemLinkToID(link)
                     local name, itemTexture, count, quality,
                           canUse = GetInboxItem(mailID, attachmentIndex)
-                    if mailDB[id] then
-                        count = mailDB[id][1] + count
+                    if not nil == id then
+                        if mailDB[id] then
+                            count = mailDB[id][1] + count
+                        end
+                        mailDB[id] = {count}
                     end
-                    mailDB[id] = {count}
                 end
             end
         end
@@ -508,10 +513,9 @@ function Memento:SlashCommand(cmd)
             showItemID = format(RED, "Disabled")
         end
         self:Print(format(TEAL, "Memento: ") .. "(/memento, /mem)")
-        self:Print("  rm <name> - Removes the player or guild NAME from " ..
+        self:Print("  rm <name> - Removes the player or guild NAME from" ..
                    " the database.")
-        self:Print("  showItemID - " ..
-                   showItemID ..
+        self:Print("  itemID - " .. showItemID ..
                    " - Toggle display of itemID in tooltips.")
     end
 end
