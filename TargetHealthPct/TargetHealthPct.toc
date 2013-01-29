@@ -1,0 +1,8 @@
+## Interface: 50100
+## Title: Target Health Percent
+## Notes: Shows the health percentage of your target.
+## Author: Windrunner-US:Integer
+## Version: 1.0.0
+## X-Website: https://github.com/rtomson
+
+TargetHealthPct.xml

@@ -1,0 +1,35 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    <Script file="TargetHealthPct.lua"/>
+    <Frame name="TargetFrameNumericalHealth" parent="TargetFrame">
+        <Size x="60" y="18"/>
+        <Anchors>
+            <Anchor point="BOTTOM" relativePoint="TOP" x="-80" y="-22"/>
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <FontString name="$parentValue" inherits="TextStatusBarText" justifyH="CENTER" text="100%" parentKey="text">
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-6"/>
+                    </Anchors>
+                </FontString>
+                <Texture name="$parentBG" file="Interface\TargetingFrame\UI-StatusBar" parentKey="bg">
+                    <Size x="48" y="14"/>
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-3"/>
+                    </Anchors>
+					<Color r="0" g="1" b="0"/>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <Texture file="Interface\TargetingFrame\NumericThreatBorder">
+                    <TexCoords left="0" right="0.765625" top="0" bottom="0.5625"/>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad function="TargetHealthPct_OnLoad"/>
+            <OnEvent function="TargetHealthPct_OnEvent"/>
+        </Scripts>
+    </Frame>
+</Ui>
