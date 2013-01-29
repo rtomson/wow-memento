@@ -1,3 +1,15 @@
+function PlayerFrameCoords_OnUpdate (self)
+    local posX, posY = GetPlayerMapPosition("player")
+    local _, worldX, worldY = GetWorldLocFromMapPos(posX, posY)
+    if 0 == posX and 0 == posY then
+        self.map:SetText("n/a")
+        self.world:SetText("n/a")
+    else
+        self.map:SetFormattedText("%.1f, %.1f", posX * 100, posY * 100)
+        self.world:SetFormattedText("%d, %d", worldX, worldY)
+    end
+end
+
 
 function showCoord(num)
 	return format("%1.1f", floor(num * 1000 + 0.5) / 10)
