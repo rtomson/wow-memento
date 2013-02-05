@@ -12,20 +12,18 @@ function TargetHealthPct_OnLoad (self)
 end
 
 function TargetHealthPct_OnEvent (self, event, ...)
-    if not "target" == ... then
+    if "UNIT_HEALTH" == event and not "target" == select(1, ...) then
         return
     end
     
     local unitCurrHP, unitHPMax = UnitHealth("target"), UnitHealthMax("target")
     local unitHPPercent = unitCurrHP / unitHPMax
-    if unitHPPercent > 0 then
-        if unitHPPercent <= 0.2 then
-            self.bg:SetVertexColor(1.0, 0.0, 0.0)
-        elseif unitHPPercent <= 0.25 then
-            self.bg:SetVertexColor(1.0, 1.0, 0.0)
-        else
-            self.bg:SetVertexColor(0.0, 1.0, 0.0)
-        end
-        self.text:SetFormattedText("%.1f%%", unitHPPercent * 100)
+    if unitHPPercent <= 0.2 then
+        self.bg:SetVertexColor(1.0, 0.0, 0.0)
+    elseif unitHPPercent <= 0.25 then
+        self.bg:SetVertexColor(1.0, 1.0, 0.0)
+    else
+        self.bg:SetVertexColor(0.0, 1.0, 0.0)
     end
+    self.text:SetFormattedText("%.1f%%", unitHPPercent * 100)
 end
