@@ -1,0 +1,376 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    <Script file="PetJournal_Teams.lua"/>
+    <Button name="$parentExpandButton" parent="PetJournal" hide="true">
+        <Size x="32" y="32"/>
+        <Anchors>
+            <Anchor point="TOPRIGHT" x="-2" y="-21"/>
+        </Anchors>
+        <Scripts>
+            <OnLoad>
+                self:SetFrameLevel(self:GetParent():GetFrameLevel() + 2)
+                PetJournal.HealPetButton:SetPoint("BOTTOMRIGHT", PetJournal, "TOPLEFT", PANEL_INSET_LEFT_OFFSET + PetJournal.LeftInset:GetWidth() + 20 + PetJournal.RightInset:GetWidth() - 36, PANEL_INSET_ATTIC_OFFSET + 1)
+            </OnLoad>
+            <OnClick>
+                if (PetJournal.Expanded) then
+                    -- SetCVar("characterFrameCollapsed", "1")
+                    PlaySound("igCharacterInfoClose")
+                    PetBattleTeams_Collapse()
+                else
+                    -- SetCVar("characterFrameCollapsed", "0")
+                    PlaySound("igCharacterInfoOpen")
+                    PetBattleTeams_Expand()
+                end
+                if (GameTooltip:GetOwner() == self) then
+                    self:GetScript("OnEnter")(self)
+                end
+            </OnClick>
+            <OnEnter>
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                if (PetJournal.Expanded) then
+                    GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE.."COLLAPSE"..FONT_COLOR_CODE_CLOSE)
+                else
+                    GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE.."EXPAND"..FONT_COLOR_CODE_CLOSE)
+                end
+            </OnEnter>
+            <OnLeave>
+                GameTooltip:Hide()
+            </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+        <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+        <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+        <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+    </Button>
+	<Button name="PetBattleTeamTemplate" virtual="true">
+		<Size x="295" y="30"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+                <!--
+				<FontString name="$parentName" inherits="GameFontNormal" justifyH="LEFT" parentKey="name">
+					<Size x="150" y="1"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="5" y="-10"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDifficulty" inherits="GameFontHighlightSmall" text="DIFFICULTY" justifyH="LEFT" parentKey="difficulty">
+					<Size x="160" y="1"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT" x="10" y="-10"/>
+						<Anchor point="TOPRIGHT" relativeTo="$parentName" relativePoint="BOTTOMRIGHT" x="0" y="-10"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentReset" inherits="GameFontHighlightSmall" text="RESET" justifyH="RIGHT" parentKey="reset">
+					<Size x="150" y="1"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="0" y="-11"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentExtended" inherits="GameFontHighlightSmall" text="EXTENDED" justifyH="RIGHT" parentKey="extended">
+					<Size x="150" y="1"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentReset" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+						<Anchor point="TOPRIGHT" relativeTo="$parentReset" relativePoint="BOTTOMRIGHT" x="0" y="-10"/>
+					</Anchors>
+				</FontString>
+                -->
+			</Layer>
+            <Layer level="BORDER">
+				<Texture name="$parentIcon" parentKey="icon">
+					<Size x="28" y="28"/>
+					<Anchors>
+						<Anchor point="LEFT" x="1" y="-2"/>
+					</Anchors>
+				</Texture>
+            </Layer>
+			<Layer level="ARTWORK" textureSubLevel="1">
+				<FontString name="$parentText" inherits="GameFontNormal" justifyH="LEFT" parentKey="text">
+					<Size x="275" y="1"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentIcon" x="5" y="-12"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontNormalSmall" justifyH="LEFT" parentKey="subText">
+					<Size x="275" y="1"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentText" x="0" y="-10"/>
+					</Anchors>
+					<!--<Color r="1" g="1" b="1" a="1"/>-->
+                    <Color r="0.510" g="0.773" b="1.0"/>
+				</FontString>
+			</Layer>
+            <!--
+			<Layer level="BORDER">
+				<Texture name="$parentPetIcon3" parentKey="petIcon3">
+					<Size x="22" y="22"/>
+					<Anchors>
+						<Anchor point="RIGHT" x="-4" y="-2"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentPetIcon2" parentKey="petIcon2">
+					<Size x="22" y="22"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="$parentPetIcon3" relativePoint="LEFT" x="-2" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentPetIcon1" parentKey="petIcon1">
+					<Size x="22" y="22"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="$parentPetIcon2" relativePoint="LEFT" x="-2" y="0"/>
+					</Anchors>
+				</Texture>
+            </Layer>
+            -->
+		</Layers>
+		<Scripts>
+			<OnClick function="PetBattleTeam_OnClick"/>
+			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+			</OnLoad>
+			<OnMouseDown function="PetBattleTeam_OnMouseDown"/>
+			<OnMouseUp function="PetBattleTeam_OnMouseUp"/>
+		</Scripts>
+		<HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="-10" y="-2"/>
+				<Anchor point="BOTTOMRIGHT" x="10" y="-2"/>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
+    
+    <Button name="$parentExpandButton2" parent="PetJournal" inherits="UIPanelButtonTemplate" parentKey="ExpandButton2" text="TEAMS">
+        <Size x="80" y="22"/>
+        <Anchors>
+            <Anchor point="TOPRIGHT" relativeTo="PetJournalPetCardInset" relativePoint="BOTTOMRIGHT"/>
+        </Anchors>
+        <Scripts>
+            <OnClick>
+                if (PetJournal.Expanded) then
+                    -- SetCVar("characterFrameCollapsed", "1")
+                    PlaySound("igCharacterInfoClose")
+                    PetBattleTeams_Collapse()
+                else
+                    -- SetCVar("characterFrameCollapsed", "0")
+                    PlaySound("igCharacterInfoOpen")
+                    PetBattleTeams_Expand()
+                end
+                if (GameTooltip:GetOwner() == self) then
+                    self:GetScript("OnEnter")(self)
+                end
+            </OnClick>
+            <OnEnter>
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                if (PetJournal.Expanded) then
+                    GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE..self.collapseTooltip..FONT_COLOR_CODE_CLOSE)
+                else
+                    GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE..self.expandTooltip..FONT_COLOR_CODE_CLOSE)
+                end
+            </OnEnter>
+            <OnLeave>
+                GameTooltip:Hide()
+            </OnLeave>
+        </Scripts>
+    </Button>
+    
+    <!--
+    <Frame name="$parentRightInset" useParentLevel="true" inherits="InsetFrameTemplate" parentKey="RightInset">
+        <Anchors>
+            <Anchor point="TOPRIGHT" x="-6" y="-252"/>
+            <Anchor point="BOTTOMLEFT" relativeTo="$parentLeftInset" relativePoint="BOTTOMRIGHT" x="20" y="0"/>
+        </Anchors>
+    </Frame>
+    -->
+    <!--
+    <Frame name="$parentTeamsInset" parent="PetJournal" inherits="InsetFrameTemplate" parentKey="TeamsInset" hidden="true">
+        <Anchors>
+            <Anchor point="TOPLEFT" x="697" y="-60"/>
+            <Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+        </Anchors>
+        <Scripts>
+            <OnLoad function="PetBattleTeams_OnLoad"/>
+            <OnEvent function="PetBattleTeams_OnEvent"/>
+        </Scripts>
+    </Frame>
+    -->
+    <Button name="$parentToggleButton" parent="PetJournalParent" parentKey="toggleButton">
+        <Size x="16" y="64"/>
+        <Anchors>
+            <Anchor point="RIGHT" x="10" y="0"/>
+        </Anchors>
+        <Scripts>
+            <OnLoad>
+                self:GetNormalTexture():SetDrawLayer("OVERLAY")
+            </OnLoad>
+            <OnClick>
+                --CompactRaidFrameManager_Toggle(self:GetParent())
+            </OnClick>
+            <OnMouseDown>
+                local tex = self:GetNormalTexture()
+                tex:ClearAllPoints()
+                tex:SetSize(self:GetSize())
+                tex:SetPoint("CENTER", 1, 0)
+            </OnMouseDown>
+            <OnMouseUp>
+                local tex = self:GetNormalTexture()
+                tex:SetAllPoints()
+            </OnMouseUp>
+            <OnShow>
+                --self:SetFrameLevel(self:GetParent().displayFrame:GetFrameLevel() + 2)
+            </OnShow>
+        </Scripts>
+        <NormalTexture file="Interface\RaidFrame\RaidPanel-Toggle">
+            <TexCoords left="0" right="0.5" top="0" bottom="1"/>
+        </NormalTexture>
+    </Button>
+    
+    <!--<Frame name="$parentTeams" parent="PetJournal" inherits="InsetFrameTemplate" hidden="true">-->
+    <Frame name="PetBattleTeams" parent="PetJournal" enableMouse="true" hidden="true">
+        <Size x="345" y="250"/>
+        <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="50" y="-16"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background-Dark" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+            <BackgroundInsets>
+                <AbsInset left="11" right="12" top="12" bottom="11"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="32"/>
+            </EdgeSize>
+        </Backdrop>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="$parentDetailHeader" file="Interface\RaidFrame\UI-RaidInfo-Header">
+                    <Size x="325" y="47"/>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="10" y="-9"/>
+                    </Anchors>
+                    <TexCoords left="0.18164" right="0.81640" top="0.578125" bottom="0.94531"/>
+                </Texture>
+                <Texture name="$parentDetailFooter" file="Interface\RaidFrame\UI-RaidInfo-Header">
+                    <Size x="326" y="29"/>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" x="9" y="9"/>
+                    </Anchors>
+                    <TexCoords left="0.18164" right="0.81640" top="0.08593" bottom="0.3125"/>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture name="$parentDetailCorner" file="Interface\DialogFrame\UI-DialogBox-Corner">
+                    <Size x="32" y="32"/>
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" x="-6" y="-7"/>
+                    </Anchors>
+                </Texture>
+                <Texture name="$parentHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
+                    <Size x="256" y="64"/>
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="12"/>
+                    </Anchors>
+                </Texture>
+                <FontString name="$parentHeaderText" inherits="GameFontNormal" text="BATTLE_PET_TEAM">
+                    <Size x="185" y="12"/>
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="$parentHeader" x="0" y="-14"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-2" y="-3"/>
+                </Anchors>
+            </Button>
+            <ScrollFrame name="$parentScrollFrame" inherits="HybridScrollFrameTemplate">
+                <Size x="305" y="157"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="16" y="-58"/>
+                </Anchors>
+                <Frames>
+                    <Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate" parentKey="scrollBar">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="0" y="-13"/>
+                            <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="0" y="14"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnShow>
+                                local parent = self:GetParent()
+                                parent:SetWidth(295)
+                                --for _, frame in pairs(parent.buttons) do
+                                --    frame:SetWidth(275);
+                                --    frame.name:SetWidth(120);
+                                --end
+                            </OnShow>
+                            <OnHide>
+                                local parent = self:GetParent();
+                                parent:SetWidth(310);
+                                --for _, frame in pairs(parent.buttons) do
+                                --    frame:SetWidth(305);
+                                --    frame.name:SetWidth(150);
+                                --end
+                            </OnHide>
+                        </Scripts>
+                    </Slider>
+                </Frames>
+                <Scripts>
+                    <OnLoad function="PetBattleTeamsScrollFrame_OnLoad"/>
+                    <OnShow>
+                        PetBattleTeams_Update()
+                    </OnShow>
+                </Scripts>
+            </ScrollFrame>
+            <Button name="$parentSaveButton" inherits="UIPanelButtonTemplate" text="SAVE">
+                <Size x="90" y="20"/>
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativeTo="$parentScrollFrame" relativePoint="TOPLEFT" x="14" y="13"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick function="PetBattleTeamsSaveButton_OnClick"/>
+                </Scripts>
+                <NormalFont style="GameFontNormalSmall"/>
+                <HighlightFont style="GameFontHighlightSmall"/>
+                <DisabledFont style="GameFontDisableSmall"/>
+            </Button>
+            <Button name="$parentActivateButton" inherits="UIPanelButtonTemplate" text="Activate Team">
+                <Size x="90" y="20"/>
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" x="14" y="13"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick function="PetBattleTeamsActivateButton_OnClick"/>
+                </Scripts>
+                <NormalFont style="GameFontNormalSmall"/>
+                <HighlightFont style="GameFontHighlightSmall"/>
+                <DisabledFont style="GameFontDisableSmall"/>
+            </Button>
+            <Button name="$parentCancelButton" inherits="UIPanelButtonTemplate" text="CLOSE">
+                <Size x="90" y="20"/>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" x="-14" y="13"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        PetBattleTeams:Hide()
+                    </OnClick>
+                </Scripts>
+                <NormalFont style="GameFontNormalSmall"/>
+                <HighlightFont style="GameFontHighlightSmall"/>
+                <DisabledFont style="GameFontDisableSmall"/>
+            </Button>
+			<Frame name="$parentOptionsMenu" inherits="UIDropDownMenuTemplate" enableMouse="true" parentKey="optionsMenu"/>
+        </Frames>
+        <Scripts>
+            <OnLoad function="PetBattleTeams_OnLoad"/>
+            <OnEvent function="PetBattleTeams_OnEvent"/>
+            <OnShow>
+                PlaySound("UChatScrollButton")
+            </OnShow>
+            <OnHide>
+                PlaySound("UChatScrollButton")
+            </OnHide>
+        </Scripts>
+    </Frame>
+</Ui>

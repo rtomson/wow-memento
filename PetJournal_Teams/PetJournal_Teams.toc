@@ -1,0 +1,11 @@
+## Interface: 50200
+## Title: PetJournal Teams
+## Notes: Provides an interface for managing battle pet teams.
+## Author: Windrunner-US:Integer
+## Version: 1
+## SavedVariables: PetBattleTeamsDB
+## Dependencies: Blizzard_PetJournal
+## X-Website: https://github.com/rtomson
+
+Localization.lua
+PetJournal_Teams.xml
