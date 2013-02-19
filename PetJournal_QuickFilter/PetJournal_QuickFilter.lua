@@ -3,7 +3,7 @@ PetJournalListScrollFrame:SetPoint("TOPLEFT", PetJournalLeftInset, 3, -60)
 
 -- Create the pet type buttons
 for petType, suffix in ipairs(PET_TYPE_SUFFIX) do
-    local btn = CreateFrame("Button", "PJ_QuickFamilyButton"..petType, PetJournalLeftInset)
+    local btn = CreateFrame("Button", "PetJournalQuickFilterButton"..petType, PetJournalLeftInset)
     btn:SetSize(24, 24)
     btn:SetPoint("TOPLEFT", PetJournalLeftInset, 6 + 25 * (petType-1), -33)
     
@@ -21,20 +21,11 @@ for petType, suffix in ipairs(PET_TYPE_SUFFIX) do
     icon:SetPoint("CENTER")
     btn.Icon = icon
     
-    local status = btn:CreateTexture(nil, "OVERLAY")
-    status:Hide()
-    status:SetTexture("Interface\\PetBattles\\PetBattleHud")
-    status:SetTexCoord(0.94921875, 0.99414063, 0.67382813, 0.76367188)
-    status:SetSize(30, 30)
-    status:SetPoint("CENTER")
-    btn.ActiveStatus = status
-    
     local highlight = btn:CreateTexture("Highlight", "OVERLAY")
     highlight:SetTexture("Interface\\PetBattles\\PetBattleHud")
     highlight:SetTexCoord(0.94921875, 0.99414063, 0.67382813, 0.76367188)
     highlight:SetSize(30, 30)
     highlight:SetPoint("CENTER")
-    highlight:Hide()
     btn:SetHighlightTexture(highlight, "BLEND")
     
     btn.isActive = false
@@ -44,21 +35,21 @@ for petType, suffix in ipairs(PET_TYPE_SUFFIX) do
     btn:SetScript("OnMouseUp",
         function(self)
             for petType, suffix in ipairs(PET_TYPE_SUFFIX) do
-                local btn = _G["PJ_QuickFamilyButton"..petType]
-                btn.ActiveStatus:Hide()
-                if not self == btn then
+                local btn = _G["PetJournalQuickFilterButton"..petType]
+                btn:UnlockHighlight()
+                if not (self == btn) then
                     btn.isActive = false
                 end
             end
             
-            if false == self.isActive then
-                btn.ActiveStatus:Show()
+            self.isActive = not self.isActive
+            if self.isActive == true then
+                btn:LockHighlight()
                 C_PetJournal.ClearAllPetTypesFilter()
                 C_PetJournal.SetPetTypeFilter(self.petType, true)
             else
                 C_PetJournal.AddAllPetTypesFilter()
             end
-            self.isActive = not self.isActive
         end
     )
 end
