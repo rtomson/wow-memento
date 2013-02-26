@@ -5,13 +5,6 @@ WoW Addons
 Adds a favorites interface to the MountJournal.
 Warning: Beta
 
-###PetJournal_QuickFilter###
-Provides quick filter buttons for pet families.
-
-###PetJournal_Teams###
-Provides an interface for managing battle pet teams.
-Warning: First commit, pre-alpha
-
 ###TargetHealthPct###
 Shows the health percentage of your target in the default unit frames.
 
