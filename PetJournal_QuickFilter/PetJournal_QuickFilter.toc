@@ -1,9 +1,0 @@
-## Interface: 50200
-## Title: PetJournal Quick Filter
-## Notes: Provides quick filter buttons for pet families.
-## Author: Windrunner-US:Integer
-## Version: 1
-## Dependencies: Blizzard_PetJournal
-## X-Website: https://github.com/rtomson
-
-PetJournal_QuickFilter.lua
